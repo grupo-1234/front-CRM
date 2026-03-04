@@ -15,6 +15,20 @@ function EditarPerfil() {
                   <label className="block font-bold text-x text-crm-preto">
                       Nome:
                   </label>
+                  <div className="col-span-full">
+                  <label htmlFor="photo" className="block text-sm/6 font-medium text-white">
+                      Photo
+                  </label>
+                  <div className="mt-2 flex items-center gap-x-3">
+                      <UserCircleIcon aria-hidden="true" className="size-12 text-gray-500" />
+                      <button
+                      type="button"
+                      className="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20"
+                      >
+                      Change
+                      </button>
+                  </div>
+                  </div>
                   <div className="mt-2">
                       <div className="flex items-center rounded-md bg-white/5 pl-3 outline-1 -outline-offset-1 outline-white/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-500">
                       <div className="shrink-0 text-base text-gray-400 select-none sm:text-sm/6">workcation.com/</div>
@@ -45,20 +59,6 @@ function EditarPerfil() {
                   <p className="mt-3 text-sm/6 text-gray-400">Write a few sentences about yourself.</p>
                   </div>
   
-                  <div className="col-span-full">
-                  <label htmlFor="photo" className="block text-sm/6 font-medium text-white">
-                      Photo
-                  </label>
-                  <div className="mt-2 flex items-center gap-x-3">
-                      <UserCircleIcon aria-hidden="true" className="size-12 text-gray-500" />
-                      <button
-                      type="button"
-                      className="rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20"
-                      >
-                      Change
-                      </button>
-                  </div>
-                  </div>
   
                   <div className="col-span-full">
                   <label htmlFor="cover-photo" className="block text-sm/6 font-medium text-white">
