@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --color-crm-roxo: #7B44F2;
+  --color-crm-rosa: #F279BC;
+  --color-crm-azul: #1675F2;
+  --color-crm-amarelo: #F2EC9B;
+  --color-crm-branco: #FBFAFF;
+  --color-crm-preto: #2B2823;
+}
