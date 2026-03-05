@@ -1,7 +1,19 @@
-import { PhotoIcon, ChevronDownIcon } from '@heroicons/react/16/solid'
 import { UserCircleIcon } from '@phosphor-icons/react'
+import { useState, type ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// interface EditarPerfilProps {
+//     dadosPerfil: {
+//     nome: string;
+//     sobrenome: string;
+//     email: string;
+//     telefone: string;
+//     };
+//     onClose: () => void;
+// }
 
 function EditarPerfil() {
+
   return (
       <>
       <div className='fixed inset-0 z-50 grid place-content-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="modalTitle'>

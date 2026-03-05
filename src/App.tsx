@@ -12,11 +12,11 @@ function App() {
  <>
   <BrowserRouter>
      <Navbar />
-     {/* <Home />
+      {/* <Home />
      <Cardproduto />
      <CardCrm /> */}
-     <Perfil /> 
-     <EditarPerfil />  
+     <Perfil />
+     <EditarPerfil />
      <Footer />
   </BrowserRouter>
 
