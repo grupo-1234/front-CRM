@@ -7,6 +7,6 @@ export interface Produto {
     descricao: string,
     preco: number,
     status: boolean,
-    usuario: Usuario;
-    categoria: Categoria;
+    usuario: Usuario | null;
+    categoria: Categoria |null;
 }

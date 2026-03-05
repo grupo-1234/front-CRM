@@ -3,6 +3,7 @@ export interface UsuarioLogin {
     nome: string,
     usuario: string,
     senha: string,
-    foto: string,
+    foto?: string,
+    perfil: string,
     token: string
 }

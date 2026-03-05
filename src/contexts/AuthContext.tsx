@@ -1,62 +1,37 @@
 import { createContext, useState, type ReactNode } from "react"
+
 import { login } from "../services/Service"
 import type { UsuarioLogin } from "../models/UsuarioLogin"
 
-// 1. Definição do que o Contexto vai "entregar" para a aplicação
 interface AuthContextProps {
     usuario: UsuarioLogin
-    handleLogout(): void
     handleLogin(usuario: UsuarioLogin): Promise<void>
+    handleLogout(): void
     isLoading: boolean
 }
 
-// 2. Definição do tipo de componente que vai envolver a App
-interface AuthProviderProps {
-    children: ReactNode
-}
-
-// 3. Criação do Contexto propriamente dito
 export const AuthContext = createContext({} as AuthContextProps)
 
-// 4. Implementação do Provider (O Provedor de Dados)
-export function AuthProvider({ children }: AuthProviderProps) {
-
-    // Estado que guarda as informações do utilizador logado
+export function AuthProvider({ children }: { children: ReactNode }) {
     const [usuario, setUsuario] = useState<UsuarioLogin>({
-        id: 0,
-        nome: "",
-        usuario: "",
-        senha: "",
-        foto: "",
-        token: ""
+        id: 0, nome: "", usuario: "", senha: "", foto: "", token: "", perfil: ""
     })
-
-    // Estado para controlar o feedback visual de carregamento
     const [isLoading, setIsLoading] = useState(false)
 
-    // Função para realizar o login
-    async function handleLogin(usuarioLogin: UsuarioLogin) {
+    async function handleLogin(userLogin: UsuarioLogin) {
         setIsLoading(true)
         try {
-            // Chamada ao serviço que configurámos com o link do Render
-            await login(`/usuarios/logar`, usuarioLogin, setUsuario)
-            alert("Utilizador autenticado com sucesso!")
+            // Envia para o endpoint do Render que você configurou no Service.ts
+            await login(`/usuarios/logar`, userLogin, setUsuario)
+            alert("Login realizado com sucesso!")
         } catch (error) {
-            alert("Dados do utilizador inconsistentes!")
+            alert("Erro: Verifique suas credenciais.")
         }
         setIsLoading(false)
     }
 
-    // Função para limpar os dados (Sair do sistema)
     function handleLogout() {
-        setUsuario({
-            id: 0,
-            nome: "",
-            usuario: "",
-            senha: "",
-            foto: "",
-            token: ""
-        })
+        setUsuario({ id: 0, nome: "", usuario: "", senha: "", foto: "", token: "" , perfil: ""})
     }
 
     return (

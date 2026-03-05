@@ -1,4 +1,4 @@
-import {  useContext, useEffect, useState, type ChangeEvent } from 'react';
+import { useContext, useEffect, useState, type ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { RotatingLines } from 'react-loader-spinner';
@@ -8,15 +8,22 @@ function Login() {
   const navigate = useNavigate();
   const { usuario, handleLogin, isLoading } = useContext(AuthContext);
 
-  const [usuarioLogin, setUsuarioLogin] = useState<UsuarioLogin>({} as UsuarioLogin);
+  const [usuarioLogin, setUsuarioLogin] = useState<UsuarioLogin>({
+    id: 0,
+    nome: '',
+    usuario: '',
+    senha: '',
+    foto: '',
+    token: ''
+  } as UsuarioLogin);
 
   useEffect(() => {
     if (usuario.token !== "") {
       navigate('/home');
     }
-  }, [usuario]);
+  }, [usuario, navigate]);
 
-  function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+  function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setUsuarioLogin({
       ...usuarioLogin,
       [e.target.name]: e.target.value
@@ -54,6 +61,7 @@ function Login() {
         </div>
       </div>
 
+      {/* Lado do Login: Minimalista e Arredondado (40% da tela) */}
       <div className="w-full lg:w-2/5 flex flex-col justify-center items-center p-8 lg:p-16 bg-slate-50">
         <div className="w-full max-w-md bg-white p-10 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
           <div className="mb-10 text-center">
@@ -67,11 +75,12 @@ function Login() {
               <input
                 type="text"
                 id="usuario"
-                name="usuario"
+                name="usuario" // Atributo 'name' deve ser igual à chave no modelo (usuario)
                 placeholder="nome@empresa.com"
                 className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none text-slate-900"
                 value={usuarioLogin.usuario}
                 onChange={atualizarEstado}
+                required
               />
             </div>
 
@@ -88,12 +97,14 @@ function Login() {
                 className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none text-slate-900"
                 value={usuarioLogin.senha}
                 onChange={atualizarEstado}
+                required
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 transition-all transform active:scale-[0.98] flex justify-center items-center"
+              disabled={isLoading}
+              className="w-full py-2.5 bg-[#1675F2] hover:bg-[#148DD9] text-white font-bold rounded-full shadow-lg shadow-indigo-200 transition-all transform active:scale-[0.98] flex justify-center items-center disabled:opacity-70"
             >
               {isLoading ? (
                 <RotatingLines strokeColor="white" strokeWidth="5" width="24" visible={true} />
