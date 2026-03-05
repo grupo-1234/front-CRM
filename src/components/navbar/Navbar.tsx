@@ -33,6 +33,9 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
                 <a href="#produto">Produto</a>
               </li>
               <li className="hover:text-white transition">
+                <Link to="/categorias">Categorias</Link>
+              </li>
+              <li className="hover:text-white transition">
                 <a href="#recursos">Recursos</a>
               </li>
               <li className="hover:text-white transition">
@@ -81,6 +84,11 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
             <a href="#produto" onClick={closeMenu} className="hover:text-white transition">
               Produto
             </a>
+          </li>
+          <li>
+            <Link to="/categorias" onClick={closeMenu} className="hover:text-white transition">
+              Categorias
+            </Link>
           </li>
           <li>
             <a href="#recursos" onClick={closeMenu} className="hover:text-white transition">
