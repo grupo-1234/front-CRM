@@ -1,3 +1,4 @@
+import { PencilSimpleIcon } from '@phosphor-icons/react'
 import React from 'react'
 
 function Perfil() {
@@ -20,7 +21,7 @@ function Perfil() {
             <div className='flex flex-col gap-5'>
                 <div className='flex w-full flex-row items-center gap-6'>
                     <div className='h-20 w-20 overflow-hidden rounded-full border border-crm-azul'>
-                        <img src='https://ik.imagekit.io/dvkwsy8r1/user.png'/>
+                        <img src='https://ik.imagekit.io/dvkwsy8r1/user.png' alt='foto do usuário'/>
                     </div>
                     <div>
                         <h4 className='mb-2 text-left text-2xl font-semibold text-gray-800'>
@@ -31,8 +32,8 @@ function Perfil() {
                                            
                     <button className='shadow-theme-xs flex w-30 items-center justify-center gap-2 
                     rounded-full border border-crm-azul bg-white px-4 py-3 text-sm font-medium text-gray-700
-                    hover:bg-crm-azul hover:text-white ml-auto'>
-                        Editar
+                    hover:bg-crm-azul hover:text-white ml-auto cursor-pointer'>
+                       <PencilSimpleIcon size={20} /> Editar
                     </button>
                 </div>
             </div>
