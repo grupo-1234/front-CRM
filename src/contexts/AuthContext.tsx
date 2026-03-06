@@ -19,15 +19,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(false)
 
     async function handleLogin(userLogin: UsuarioLogin) {
-        setIsLoading(true)
-        try {
-            await login(`/usuarios/logar`, userLogin, setUsuario)
-            alert("Login realizado com sucesso!")
-        } catch (error) {
-            alert("Erro: Verifique suas credenciais.")
-        }
-        setIsLoading(false)
+    setIsLoading(true)
+
+    try {
+
+        await login(`/usuarios/logar`, userLogin, (resposta: UsuarioLogin) => {
+            setUsuario(resposta)
+            localStorage.setItem("token", resposta.token)
+        })
+
+        alert("Login realizado com sucesso!")
+
+    } catch (error) {
+        alert("Erro: Verifique suas credenciais.")
     }
+
+    setIsLoading(false)
+}
 
     function handleLogout() {
         setUsuario({ id: 0, nome: "", usuario: "", senha: "", foto: "", token: "" , perfil: ""})
