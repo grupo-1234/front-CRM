@@ -1,10 +1,10 @@
 import { createContext, useState, type ReactNode } from "react"
-
 import { login } from "../services/Service"
 import type { UsuarioLogin } from "../models/UsuarioLogin"
 
 interface AuthContextProps {
     usuario: UsuarioLogin
+    setUsuario: React.Dispatch<React.SetStateAction<UsuarioLogin>> // Nova prop para atualização direta
     handleLogin(usuario: UsuarioLogin): Promise<void>
     handleLogout(): void
     isLoading: boolean
@@ -21,7 +21,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function handleLogin(userLogin: UsuarioLogin) {
         setIsLoading(true)
         try {
-            // Envia para o endpoint do Render que você configurou no Service.ts
             await login(`/usuarios/logar`, userLogin, setUsuario)
             alert("Login realizado com sucesso!")
         } catch (error) {
@@ -35,7 +34,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ usuario, handleLogin, handleLogout, isLoading }}>
+        // Passamos o setUsuario no Provider
+        <AuthContext.Provider value={{ usuario, setUsuario, handleLogin, handleLogout, isLoading }}>
             {children}
         </AuthContext.Provider>
     )
