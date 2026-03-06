@@ -1,10 +1,10 @@
-
 import { CaretRight, Check } from "@phosphor-icons/react";
+
 import pessoas from "../../assets/pessoas.png";
 
 function Home() {
   return (
-    <section className="bg-[#FBFAFF] pt-32 pb-24">
+    <section className="bg-[#FBFAFF pt-32 pb-24">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
 
         <div>
@@ -21,13 +21,16 @@ function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            <button className="bg-gradient-to-r from-[#2563EB] to-[#EC4899]
+
+            <button
+              className="bg-gradient-to-r from-[#2563EB] to-[#EC4899]
               hover:from-[#1D4ED8] hover:to-[#DB2777]
               text-white px-8 py-4 rounded-xl font-semibold
               flex items-center justify-center gap-2
               transition-all duration-300
               shadow-lg hover:shadow-2xl
-              hover:-translate-y-1 hover:scale-105">
+              hover:-translate-y-1 hover:scale-105"
+            >
               Começar gratuitamente
               <CaretRight size={20} weight="bold" />
             </button>
@@ -41,21 +44,26 @@ function Home() {
             >
               Ver demonstração
             </button>
+
           </div>
 
           <div className="flex flex-col sm:flex-row gap-6 text-sm text-gray-700">
+
             <div className="flex items-center gap-2">
               <Check size={18} weight="bold" className="text-[#2563EB]" />
               Controle de clientes
             </div>
+
             <div className="flex items-center gap-2">
               <Check size={18} weight="bold" className="text-[#EC4899]" />
               Gestão de contratos
             </div>
+
             <div className="flex items-center gap-2">
               <Check size={18} weight="bold" className="text-[#FACC15]" />
               Relatórios financeiros
             </div>
+
           </div>
         </div>
 

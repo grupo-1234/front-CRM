@@ -56,7 +56,7 @@ function Section({ title, description, imageSrc, reverse }: SectionProps) {
 
 export default function CardCrm() {
   return (
-    <section className="bg-[#FBFAFF] py-24">
+    <section className="bg-[#FBFAFF py-24">
       <div className="max-w-7xl mx-auto px-6 space-y-32">
         <Section
           title="Gestão inteligente"
