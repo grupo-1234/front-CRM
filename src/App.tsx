@@ -5,6 +5,7 @@ import Footer from "./components/footer/Footer";
 import { AuthProvider } from "./contexts/AuthContext";
 import Login from "./pages/login/Login";
 import Cadastro from "./pages/cadastro/Cadastro";
+import Perfil from "./pages/perfil/visualizarPerfil/Perfil";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/perfil" element={<Perfil />} />
           </Routes>
         </div>
         <Footer />
