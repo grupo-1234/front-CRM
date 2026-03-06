@@ -1,78 +1,59 @@
 import { Link } from "react-router-dom";
+import { Trash, Pencil } from "@phosphor-icons/react";
 
 function CardProduto() {
   return (
-    <div className="border border-[var(--color-crm-roxo)]/20 bg-[var(--color-crm-branco)] 
-                    flex flex-col rounded-2xl overflow-hidden justify-between 
-                    shadow-sm hover:shadow-lg transition-all duration-300">
+    <div
+      className="flex bg-gray-50 
+           rounded-lg shadow-sm hover:shadow-md
+           transition-all duration-300 overflow-hidden
+           w-64"
+    >
+      {/*Faixa roxa lateral*/}
+      <div className="w-1 bg-[var(--color-crm-roxo)]"></div>
 
-      <div>
-        {/* Header */}
-        <div className="flex w-full bg-[var(--color-crm-roxo)] py-3 px-4 items-center">
-          <h3 className="text-lg font-bold text-white uppercase tracking-wide">
-            Nome do Cliente
-          </h3>
+      <div className="p-3 flex-1 relative">
+
+        {/*Ícones lado direito */}
+        <div className="absolute top-2 right-2 flex flex-col gap-1">
+          
+          {/* Deletar */}
+          <button
+            className="text-[var(--color-crm-rosa)] 
+                       hover:bg-[var(--color-crm-rosa)]/10 
+                       p-1 rounded-full transition-all"
+          >
+            <Trash size={16} weight="bold" />
+          </button>
+
+          {/* Editar */}
+          <Link
+            to=""
+            className="text-[var(--color-crm-azul)] 
+                       hover:bg-[var(--color-crm-azul)]/10 
+                       p-1 rounded-full transition-all"
+          >
+            <Pencil size={16} weight="bold" />
+          </Link>
+
         </div>
 
-        {/* Conteúdo */}
-        <div className="p-5">
-          <h4 className="text-lg font-semibold uppercase mb-2 
-                         text-[var(--color-crm-preto)]">
-            Nome do Produto
-          </h4>
+        <h3 className="text-sm font-semibold 
+                       text-[var(--color-crm-preto)] 
+                       mb-1 pr-8 leading-tight">
+          Nome do Produto
+        </h3>
 
-          <p className="text-gray-500 text-sm mb-4 line-clamp-2">
-            Descrição do produto aqui
-          </p>
+        <p className="text-[11px] text-gray-500 mb-2 line-clamp-2">
+          Descrição do produto aqui
+        </p>
 
-          <div className="space-y-2 text-sm text-[var(--color-crm-preto)]/80">
-            <p>
-              <span className="font-medium">Preço:</span> R$ 0,00
-            </p>
-
-            <p>
-              <span className="font-medium">Categoria:</span> Nome da Categoria
-            </p>
-
-            <p>
-              <span className="font-medium">Responsável:</span> Nome do Usuário
-            </p>
-
-            <p className="flex items-center gap-2">
-              <span className="font-medium">Status:</span>
-              <span className="px-3 py-1 rounded-full text-xs font-semibold
-                               bg-[var(--color-crm-amarelo)] 
-                               text-[var(--color-crm-preto)]">
-                Ativo
-              </span>
-            </p>
-          </div>
+        <div className="text-[11px] text-[var(--color-crm-preto)]/70 space-y-0.5">
+          <p>Cliente: Nome do Cliente</p>
+          <p>Preço: R$ 0,00</p>
         </div>
+
       </div>
-
-      {/* Botões */}
-      <div className="flex border-t border-[var(--color-crm-roxo)]/10">
-        <Link
-          to=""
-          className="w-full text-white bg-[var(--color-crm-azul)] 
-                     hover:bg-[var(--color-crm-roxo)] 
-                     flex items-center justify-center py-3 
-                     transition-colors duration-300"
-        >
-          Editar
-        </Link>
-
-        <Link
-          to=""
-          className="w-full text-white bg-[var(--color-crm-rosa)] 
-                     hover:brightness-90 
-                     flex items-center justify-center py-3 
-                     transition-all duration-300"
-        >
-          Deletar
-        </Link>
-      </div>
-
     </div>
   );
 }
