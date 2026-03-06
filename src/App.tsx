@@ -1,24 +1,31 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom"; // Adicionamos Routes e Route
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/home/Home";
 import Footer from "./components/footer/Footer";
-import Cardproduto from "./components/cards/produtos/Cardproduto";
-import CardCrm from "./components/cards/crm/Cardcrm";
-
+import { AuthProvider } from "./contexts/AuthContext";
+import Login from "./pages/login/Login";
+import Cadastro from "./pages/cadastro/Cadastro";
+import Perfil from "./pages/perfil/visualizarPerfil/Perfil";
 
 function App() {
- return (
- <>
-  <BrowserRouter>
-     <Navbar />
-     <Home />
-     <Cardproduto />
-     <CardCrm />
-     <Footer />
-  </BrowserRouter>
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <div className='min-h-[80vh]'>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/perfil" element={<Perfil />} />
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </AuthProvider>
+  );
 
-</>
- );
 }
 
 export default App;
