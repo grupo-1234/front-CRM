@@ -10,9 +10,9 @@ import FormProduto from '../../components/cards/produtos/formProduto/FormProduto
 
 function ListaProdutos() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
-  const [categorias, setCategorias] = useState<Categoria[]>([]);  
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [busca, setBusca] = useState('');
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState('');  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [idSelecionado, setIdSelecionado] = useState<string | undefined>(undefined);
 
@@ -27,11 +27,15 @@ function ListaProdutos() {
   ];
 
   async function carregarDados() {
-    const token = localStorage.getItem("token");
-    const header = { headers: { Authorization: token } };
-    
-    await buscar('/produtos', setProdutos, header);
-    await buscar('/categoria', setCategorias, header);
+    try {
+      const token = localStorage.getItem("token");
+      const header = { headers: { Authorization: token } };
+      
+      await buscar('/produtos', setProdutos, header);
+      await buscar('/categoria', setCategorias, header);
+    } catch (error) {
+      console.error("Erro ao carregar Pipeline:", error);
+    }
   }
 
   useEffect(() => {
@@ -40,16 +44,25 @@ function ListaProdutos() {
     }
   }, [usuario.token]);
 
-  const leadsFiltrados = produtos.filter(p => {
-    const matchesBusca = p.nomeProduto.toLowerCase().includes(busca.toLowerCase());
-    const matchesCategoria = categoriaSelecionada === '' || p.categoria?.id.toString() === categoriaSelecionada;
-    return matchesBusca && matchesCategoria;
+    const leadsFiltrados = produtos.filter(p => {
+    const nomeOk = p.nomeProduto.toLowerCase().includes(busca.toLowerCase());
+    const categoriaOk = categoriaSelecionada === '' || p.categoria?.id.toString() === categoriaSelecionada;
+    return nomeOk && categoriaOk;
   });
 
   const getColuna = (descricao: string) => {
-  const match = descricao.match(/\[(.*?)\]/);
-  return match ? match[1].toUpperCase() : 'NOVO';
-};
+    if (!descricao || typeof descricao !== 'string') return 'NOVO';
+    
+    const match = descricao.match(/\[(.*?)\]/);
+    
+    if (match) {
+      const tag = match[1].toUpperCase().trim();
+      const colunasValidas = ['NOVO', 'CONTATO', 'NEGOCIACAO', 'PROPOSTA', 'FECHADO'];
+      return colunasValidas.includes(tag) ? tag : 'NOVO';
+    }
+    
+    return 'NOVO';
+  };
 
   return (
     <div className="p-8 mt-20 bg-slate-50 min-h-screen">
@@ -60,8 +73,8 @@ function ListaProdutos() {
                 <LayoutDashboard size={28} />
             </div>
             <div>
-                <h1 className="text-2xl font-black text-slate-800 tracking-tighter uppercase leading-none">Pipeline</h1>
-                <p className="text-slate-400 text-xs font-bold mt-1 uppercase tracking-widest">Gestão de Oportunidades</p>
+                <h1 className="text-2xl font-black text-slate-800 tracking-tighter uppercase leading-none text-blue-600">Pipeline</h1>
+                <p className="text-slate-400 text-[10px] font-bold mt-1 uppercase tracking-widest italic">Freelancer CRM</p>
             </div>
         </div>
 
@@ -70,19 +83,19 @@ function ListaProdutos() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input 
                     type="text" 
-                    placeholder="Procurar cliente..."
+                    placeholder="Buscar lead pelo nome..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:border-[#1675F2] text-sm transition-all"
                     value={busca}
                     onChange={(e) => setBusca(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:border-[#1675F2] focus:ring-4 focus:ring-blue-50 transition-all text-sm"
                 />
             </div>
 
-            <div className="relative min-w-[180px]">
+            <div className="relative min-w-[200px]">
                 <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <select 
+                    className="w-full pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white outline-none focus:border-[#1675F2] text-sm appearance-none cursor-pointer"
                     value={categoriaSelecionada}
                     onChange={(e) => setCategoriaSelecionada(e.target.value)}
-                    className="w-full pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white outline-none focus:border-[#1675F2] text-sm appearance-none cursor-pointer"
                 >
                     <option value="">Todas as Categorias</option>
                     {categorias.map(cat => (
@@ -93,14 +106,14 @@ function ListaProdutos() {
 
             <button 
                 onClick={() => { setIdSelecionado(undefined); setIsModalOpen(true); }}
-                className="bg-[#1675F2] text-white flex items-center gap-2 px-6 py-2.5 rounded-xl hover:bg-[#1464CC] transition-all shadow-lg shadow-blue-100 font-bold text-sm"
+                className="bg-[#1675F2] text-white flex items-center gap-2 px-6 py-2.5 rounded-xl hover:bg-[#1464CC] transition-all shadow-lg font-bold text-sm"
             >
                 <Plus size={18} /> Novo Lead
             </button>
         </div>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto pb-6">
+      <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
         {colunas.map((col) => (
           <div key={col.id} className="min-w-[320px] flex-1 flex flex-col gap-4">
             <div className="flex items-center justify-between px-2">
