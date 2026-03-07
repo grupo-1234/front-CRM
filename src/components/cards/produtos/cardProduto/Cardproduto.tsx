@@ -9,7 +9,6 @@ interface CardProdutoProps {
 
 function CardProduto({ produto, onEdit, onDelete }: CardProdutoProps) {
     
-    // Remove a tag [STATUS] da descrição para exibir apenas o texto limpo para o usuário
     const descricaoLimpa = produto.descricao.replace(/\[.*?\]/g, '').trim();
 
     return (
@@ -18,7 +17,6 @@ function CardProduto({ produto, onEdit, onDelete }: CardProdutoProps) {
             hover:shadow-xl hover:border-blue-200 transition-all duration-300
             ${!produto.status ? 'opacity-60 grayscale-[0.5]' : ''}
         `}>
-            {/* Cabeçalho do Card: Categoria e Ações */}
             <div className="flex justify-between items-start mb-4">
                 <span className="text-[10px] font-black uppercase tracking-widest text-[#1675F2] bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
                     {produto.categoria?.nome || 'Geral'}
@@ -42,7 +40,6 @@ function CardProduto({ produto, onEdit, onDelete }: CardProdutoProps) {
                 </div>
             </div>
 
-            {/* Informações do Lead */}
             <div className="mb-4">
                 <h3 className="font-extrabold text-slate-800 text-base leading-tight mb-1 group-hover:text-[#1675F2] transition-colors">
                     {produto.nomeProduto}
@@ -52,12 +49,10 @@ function CardProduto({ produto, onEdit, onDelete }: CardProdutoProps) {
                 </p>
             </div>
 
-            {/* Descrição do Projeto */}
             <p className="text-xs text-slate-500 line-clamp-2 mb-5 min-h-[32px] leading-relaxed">
                 {descricaoLimpa || 'Nenhuma descrição detalhada fornecida para este lead.'}
             </p>
 
-            {/* Rodapé: Valor do Contrato */}
             <div className="flex justify-between items-center pt-4 border-t border-slate-50">
                 <div className="flex flex-col">
                     <span className="text-[10px] uppercase font-bold text-slate-300 tracking-tighter">Valor Estimado</span>
@@ -69,7 +64,6 @@ function CardProduto({ produto, onEdit, onDelete }: CardProdutoProps) {
                     </div>
                 </div>
                 
-                {/* Status Visual de Ativo/Pausado */}
                 {!produto.status && (
                     <span className="text-[9px] font-bold bg-slate-100 text-slate-400 px-2 py-1 rounded-md uppercase">
                         Pausado
