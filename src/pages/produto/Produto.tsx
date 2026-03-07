@@ -35,6 +35,8 @@ function ListaProdutos() {
     try {
       const token = localStorage.getItem("token");
       const header = { headers: { Authorization: token } };
+      
+      // Busca produtos e categorias simultaneamente para os filtros
       await buscar('/produtos', setProdutos, header);
       await buscar('/categoria', setCategorias, header);
     } catch (error) {
@@ -48,12 +50,13 @@ function ListaProdutos() {
     }
   }, [usuario.token]);
 
+  // Abre o formulário para edição
   function handleEdit(id: string) {
     setIdSelecionado(id);
     setIsModalOpen(true);
   }
 
-  // Prepara os dados para o modal de exclusão
+  // Prepara os dados e abre o modal de exclusão
   function handleOpenDelete(id: string) {
     const prod = produtos.find(p => p.id.toString() === id);
     if (prod) {
@@ -79,71 +82,78 @@ function ListaProdutos() {
     return 'NOVO';
   };
 
+  const calcularTotalColuna = (colId: string) => {
+    return leadsFiltrados
+      .filter(p => getColuna(p.descricao) === colId)
+      .reduce((acc, curr) => acc + curr.preco, 0);
+  };
+
   return (
-    <div className="p-8 mt-20 bg-slate-50 min-h-screen">
+    <div className="p-4 mt-16 bg-slate-50 min-h-screen">
       
-      {/* TOOLBAR */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-6 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-        <div className="flex items-center gap-4">
-            <div className="p-3 bg-blue-50 text-[#1675F2] rounded-2xl">
-                <LayoutDashboard size={28} />
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-50 text-[#1675F2] rounded-xl">
+                <LayoutDashboard size={20} />
             </div>
             <div>
-                <h1 className="text-2xl font-black text-slate-800 tracking-tighter uppercase leading-none text-blue-600">Pipeline</h1>
-                <p className="text-slate-400 text-[10px] font-bold mt-1 uppercase tracking-widest italic">Freelancer CRM</p>
+                <h1 className="text-lg font-black text-slate-800 tracking-tight uppercase leading-none">Pipeline</h1>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Total: R$ {new Intl.NumberFormat('pt-BR').format(leadsFiltrados.reduce((acc, p) => acc + p.preco, 0))}</p>
             </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto">
-            <div className="relative flex-1 min-w-[200px]">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+        <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="relative flex-1 md:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                 <input 
                     type="text" 
-                    placeholder="Buscar lead pelo nome..."
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:border-[#1675F2] text-sm transition-all"
+                    placeholder="Filtrar por nome..."
+                    className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-100 bg-slate-50 text-xs outline-none focus:bg-white focus:border-blue-300 transition-all"
                     value={busca}
                     onChange={(e) => setBusca(e.target.value)}
                 />
             </div>
 
-            <div className="relative min-w-[200px]">
-                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                <select 
-                    className="w-full pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white outline-none focus:border-[#1675F2] text-sm appearance-none cursor-pointer"
-                    value={categoriaSelecionada}
-                    onChange={(e) => setCategoriaSelecionada(e.target.value)}
-                >
-                    <option value="">Todas as Categorias</option>
-                    {categorias.map(cat => (
-                        <option key={cat.id} value={cat.id.toString()}>{cat.nome}</option>
-                    ))}
-                </select>
-            </div>
+            <select 
+                className="hidden md:block pl-3 pr-8 py-2 rounded-xl border border-slate-100 bg-slate-50 text-xs outline-none focus:border-blue-300 appearance-none cursor-pointer"
+                value={categoriaSelecionada}
+                onChange={(e) => setCategoriaSelecionada(e.target.value)}
+            >
+                <option value="">Todas Categorias</option>
+                {categorias.map(cat => (
+                    <option key={cat.id} value={cat.id.toString()}>{cat.nome}</option>
+                ))}
+            </select>
 
             <button 
                 onClick={() => { setIdSelecionado(undefined); setIsModalOpen(true); }}
-                className="bg-[#1675F2] text-white flex items-center gap-2 px-6 py-2.5 rounded-xl hover:bg-[#1464CC] transition-all shadow-lg font-bold text-sm cursor-pointer"
+                className="bg-[#1675F2] text-white px-5 py-2 rounded-xl hover:bg-[#1464CC] text-xs font-bold transition-all shadow-md shadow-blue-100 flex items-center gap-2 cursor-pointer"
             >
-                <Plus size={18} /> Novo Lead
+                <Plus size={14} /> Novo Lead
             </button>
         </div>
       </div>
 
-      {/* QUADRO KANBAN */}
-      <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
+      <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide">
         {colunas.map((col) => (
-          <div key={col.id} className="min-w-[320px] flex-1 flex flex-col gap-4">
-            <div className="flex items-center justify-between px-2">
+          <div key={col.id} className="min-w-[260px] max-w-[280px] flex-1 flex flex-col gap-3">
+            
+            <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-2">
-                <div className={`w-2.5 h-2.5 rounded-full ${col.cor}`}></div>
-                <h2 className="font-black text-slate-600 uppercase text-xs tracking-widest">{col.titulo}</h2>
+                <div className={`w-1.5 h-1.5 rounded-full ${col.cor}`}></div>
+                <h2 className="font-bold text-slate-500 uppercase text-[10px] tracking-wider">{col.titulo}</h2>
               </div>
-              <span className="bg-white border border-slate-200 text-slate-500 px-2 py-0.5 rounded-lg text-[10px] font-black">
-                {leadsFiltrados.filter(p => getColuna(p.descricao) === col.id).length}
-              </span>
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] font-black text-slate-300">
+                    {leadsFiltrados.filter(p => getColuna(p.descricao) === col.id).length}
+                </span>
+                <span className="text-[9px] font-bold text-blue-400">
+                    R$ {new Intl.NumberFormat('pt-BR').format(calcularTotalColuna(col.id))}
+                </span>
+              </div>
             </div>
 
-            <div className="flex flex-col gap-4 min-h-[600px] bg-slate-100/30 p-3 rounded-[32px] border-2 border-dashed border-slate-200/50">
+            <div className="flex flex-col gap-3 min-h-[500px] bg-slate-200/20 p-2 rounded-2xl border border-slate-200/40">
               {leadsFiltrados
                 .filter(p => getColuna(p.descricao) === col.id)
                 .map(p => (
@@ -160,7 +170,7 @@ function ListaProdutos() {
         ))}
       </div>
 
-      {/* MODAIS */}
+      {/* MODAIS DE GESTÃO */}
       <FormProduto open={isModalOpen} setOpen={setIsModalOpen} id={idSelecionado} />
       
       {produtoParaDeletar && (
