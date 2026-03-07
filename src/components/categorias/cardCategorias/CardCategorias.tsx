@@ -1,77 +1,57 @@
-import { Link } from 'react-router-dom'
+import { PencilLine, Trash } from 'lucide-react'
 import type { Categoria } from '../../../models/Categoria'
-import { PencilLine, Trash, FileText } from 'lucide-react'
 
 interface CardCategoriaProps {
   categoria: Categoria
+  onEdit: (id: string) => void
+  onDelete: (id: string) => void // Adicionado para resolver o erro de tipagem
 }
 
-function CardCategorias({ categoria }: CardCategoriaProps) {
+function CardCategorias({ categoria, onEdit, onDelete }: CardCategoriaProps) {
   return (
-    <div className="group flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-white hover:bg-gray-50 transition-colors duration-200 rounded-lg">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-6 py-4 hover:bg-slate-50 transition-colors duration-200 text-sm">
       
-      {/* Lado Esquerdo: ID e Nome */}
-      <div className="flex items-center gap-4 flex-1">
-        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 text-gray-500 text-sm font-medium">
-          {categoria.id}
+      {/* Lado Esquerdo: ID */}
+      <div className="md:col-span-1 flex justify-center">
+        <span className="font-mono text-slate-400 bg-slate-100 px-2 py-1 rounded text-xs italic">
+          #{categoria.id}
         </span>
-        <div>
-          <h3 className="text-sm font-semibold text-gray-700">{categoria.nome}</h3>
-          <p className="text-xs text-gray-400 uppercase tracking-wider">ID: {categoria.id}</p>
-        </div>
       </div>
 
-      {/* Centro: Produtos e Status */}
-      <div className="flex items-center gap-6 flex-[2] justify-center">
-        {/* Produtos Count */}
-        <span className="text-[13px] font-medium px-3 py-0.5 bg-gray-100 rounded text-gray-600">
-          {categoria.produtos?.length || 0}
-        </span>
-
-        {/* Badges de Status */}
-        <div className="flex gap-2">
-          {[
-            { label: 'Mobile', color: 'bg-blue-500' },
-            { label: 'Menu', color: 'bg-gray-400' },
-            { label: 'Ativo', color: 'bg-emerald-500' }
-          ].map((status) => (
-            <span
-              key={status.label}
-              className={`px-2 py-1 text-white text-[11px] font-bold rounded-md shadow-sm ${status.color}`}
-            >
-              {status.label}
-            </span>
-          ))}
-        </div>
+      {/* Nome da Categoria */}
+      <div className="md:col-span-3 font-semibold text-slate-700 truncate">
+        {categoria.nome}
       </div>
 
-      {/* Lado Direito: Ações */}
-      <div className="flex items-center gap-2">
-        {/* Visualizar */}
+      {/* Descrição Centralizada */}
+      <div className="md:col-span-5 text-slate-500 truncate text-center italic">
+        {categoria.descricao || 'Sem descrição definida'}
+      </div>
+
+      {/* Contador de Serviços (Produtos) */}
+      <div className="md:col-span-1 flex justify-center">
+        <span className="bg-blue-50 text-[#1675F2] px-2.5 py-0.5 rounded-full text-xs font-bold border border-blue-100">
+          {categoria.produto?.length || 0}
+        </span>
+      </div>
+
+      {/* Ações: Editar e Deletar */}
+      <div className="md:col-span-2 flex justify-end gap-1">
         <button
-          title="Visualizar"
-          className="p-2 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+          title="Editar"
+          onClick={() => onEdit(categoria.id.toString())}
+          className="p-2 text-slate-400 hover:text-[#1675F2] hover:bg-blue-50 rounded-lg transition-all cursor-pointer"
         >
-          <FileText size={16} />
+          <PencilLine size={18} />
         </button>
 
-        {/* Editar */}
-        <Link
-          to={`/editarCategoria/${categoria.id}`}
-          title="Editar"
-          className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-        >
-          <PencilLine size={16} />
-        </Link>
-
-        {/* Deletar */}
-        <Link
-          to={`/deletarCategoria/${categoria.id}`}
+        <button
           title="Deletar"
-          className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+          onClick={() => onDelete(categoria.id.toString())}
+          className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
         >
-          <Trash size={16} />
-        </Link>
+          <Trash size={18} />
+        </button>
       </div>
     </div>
   )
