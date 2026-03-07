@@ -11,6 +11,7 @@ import ListaCategorias from "./components/categorias/listaCategorias/ListaCatego
 
 import { AuthProvider } from "./contexts/AuthContext";
 import ListaProdutos from "./pages/produto/Produto";
+import Planos from "./pages/Planos";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/produtos" element={<ListaProdutos />} />
             <Route path="/categoria" element={<ListaCategorias />} />
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/planos" element={<Planos />} />
           </Routes>
         </div>
 
