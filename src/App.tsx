@@ -8,10 +8,9 @@ import Cadastro from "./pages/cadastro/Cadastro";
 import Perfil from "./pages/perfil/visualizarPerfil/Perfil";
 
 import ListaCategorias from "./components/categorias/listaCategorias/ListaCategorias";
-import FormCategoria from "./components/categorias/formCategoria/FormCategoria";
-import DeletarCategoria from "./components/categorias/deletarCategoria/DeletarCategoria";
 
 import { AuthProvider } from "./contexts/AuthContext";
+import ListaProdutos from "./pages/produto/Produto";
 
 function App() {
   return (
@@ -19,17 +18,15 @@ function App() {
       <BrowserRouter>
         <Navbar />
 
-        <div className="min-h-[80vh]">
+        <div className="min-h-[80vh] bg-slate-50">
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/cadastro" element={<Cadastro />} /> 
             <Route path="/home" element={<Home />} />
-            <Route path="/perfil" element={<Perfil />} />
+            <Route path="/produtos" element={<ListaProdutos />} />
             <Route path="/categoria" element={<ListaCategorias />} />
-            <Route path="/cadastrarCategoria" element={<FormCategoria />} />
-            <Route path="/editarCategoria/:id" element={<FormCategoria />} />
-            <Route path="/deletarCategoria/:id" element={<DeletarCategoria />} />
+            <Route path="/perfil" element={<Perfil />} />
           </Routes>
         </div>
 
