@@ -59,7 +59,6 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
     if (open) {
       carregarDados();
     } else {
-      // Limpa o estado ao fechar o modal
       setProduto({ 
         id: 0, 
         nomeProduto: '', 
@@ -85,53 +84,49 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
   }
 
   async function salvarProduto(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    
-    // Validação de segurança para garantir que o usuário está logado
-    if (!usuario.id || usuario.id === 0) {
-        alert("Sessão inválida. Por favor, faça login novamente.");
-        return;
-    }
-
-    // Prepara a descrição injetando a Tag da coluna selecionada
-    const textoLimpo = obterDescricaoLimpa(produto.descricao);
-    const descricaoComTag = `[${colunaSel.toUpperCase()}] ${textoLimpo}`;
-
-    // Monta o objeto de envio seguindo a estrutura da Entity no Backend
-    const produtoParaEnviar = {
-      ...produto,
-      nomeProduto: produto.nomeProduto,
-      descricao: descricaoComTag,
-      preco: Number(produto.preco),
-      categoria: { id: Number(produto.categoria?.id) }, // Relacionamento com Categoria
-      usuario: { id: usuario.id } // Vincula ao usuário logado
-    };
-
-    try {
-      if (id !== undefined) {
-        // Atualização de produto existente
-        await atualizar(`/produtos`, produtoParaEnviar, setProduto, { 
-          headers: { Authorization: token } 
-        });
-      } else {
-        // Cadastro de novo produto: remove o ID 0 para o banco gerar automático
-        const { id: _, ...novoProduto } = produtoParaEnviar;
-        await cadastrar(`/produtos`, novoProduto, setProduto, { 
-          headers: { Authorization: token } 
-        });
-      }
-      
-      setOpen(false);
-      // Timeout leve para garantir que a requisição finalizou antes do refresh
-      setTimeout(() => {
-        window.location.reload(); 
-      }, 500);
-      
-    } catch (error: any) {
-      alert('Erro ao salvar o Lead. Verifique os campos obrigatórios.');
-    }
+  e.preventDefault();
+  
+  const token = localStorage.getItem("token");
+  
+  if (!token || !usuario.id) {
+    alert("Sessão expirada. Por favor, faça login novamente.");
+    return;
   }
+
+  const textoLimpo = obterDescricaoLimpa(produto.descricao);
+  const descricaoComTag = `[${colunaSel.toUpperCase()}] ${textoLimpo}`;
+
+  const produtoParaEnviar = {
+    ...produto,
+    descricao: descricaoComTag,
+    preco: Number(produto.preco),
+    categoria: { id: Number(produto.categoria?.id) },
+    usuario: { id: usuario.id } 
+  };
+
+  try {
+    if (id !== undefined) {
+      await atualizar(`/produtos`, produtoParaEnviar, setProduto, { 
+        headers: { Authorization: token } 
+      });
+    } else {
+      const { id: _, ...novoProduto } = produtoParaEnviar;
+      await cadastrar(`/produtos`, novoProduto, setProduto, { 
+        headers: { Authorization: token } 
+      });
+    }
+    
+    setOpen(false);
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
+
+  } catch (error: any) {
+    console.error("Erro no cadastro:", error);
+    alert('Erro ao salvar o Lead. Verifique os dados ou sua conexão.');
+  }
+}
 
   if (!open) return null;
 
@@ -154,11 +149,9 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
           </button>
         </div>
 
-        {/* Corpo do Formulário */}
         <form className="p-8 flex flex-col gap-6" onSubmit={salvarProduto}>
           
           <div className="grid grid-cols-2 gap-6">
-            {/* Campo: Nome do Cliente */}
             <div className="flex flex-col gap-2">
               <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Nome do Cliente</label>
               <input 
@@ -171,7 +164,6 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
               />
             </div>
 
-            {/* Campo: Valor Estimado */}
             <div className="flex flex-col gap-2">
               <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Valor Estimado (R$)</label>
               <div className="relative">
@@ -190,7 +182,6 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
           </div>
 
           <div className="grid grid-cols-2 gap-6">
-            {/* Seleção de Categoria */}
             <div className="flex flex-col gap-2">
               <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Categoria do Lead</label>
               <select 
@@ -207,7 +198,6 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
               </select>
             </div>
 
-            {/* Seleção da Etapa do Pipeline (Simulação de Kanban via Descrição) */}
             <div className="flex flex-col gap-2">
               <label className="text-xs font-black text-blue-500 uppercase italic">Etapa do Pipeline (Coluna)</label>
               <select 
@@ -224,7 +214,6 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
             </div>
           </div>
 
-          {/* Campo: Descrição/Anotações com contador conforme Backend */}
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
               <label className="text-xs font-black text-slate-500 uppercase tracking-widest">Anotações do Lead</label>
@@ -242,7 +231,6 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
             />
           </div>
 
-          {/* Footer com botões de ação */}
           <footer className="flex gap-4 mt-2">
             <button 
               type="button" 
