@@ -154,7 +154,6 @@ function Login() {
   useEffect(() => {
 
     if (usuario.token !== "") {
-      ToastAlerta('Usuário cadastrado com sucesso!', 'success');
       navigate('/home');
     }
   }, [usuario, navigate]);
@@ -239,13 +238,16 @@ function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 bg-[#1675F2] hover:bg-[#148DD9] text-white font-bold rounded-full shadow-lg shadow-indigo-200 transition-all transform active:scale-[0.98] flex justify-center items-center disabled:opacity-70"
+              className="w-full py-2.5 bg-[#1675F2] hover:bg-[#148DD9] text-white font-bold rounded-full shadow-lg shadow-indigo-200 
+              transition-all transform active:scale-[0.98] flex justify-center items-center disabled:opacity-70"
             >
               {isLoading ? (
-                <RotatingLines strokeColor="white" strokeWidth="5" width="24" visible={true} />
-              ) : (
-                "Entrar no Painel"
-              )}
+              <div className="flex items-center justify-center h-5">
+                <RotatingLines strokeColor="white" strokeWidth="5" width="20" visible={true} />
+              </div>
+            ) : (
+              "Entrar no Painel"
+            )}
             </button>
           </form>
 

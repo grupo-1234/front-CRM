@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, type ReactNode } from "react"
 import { login } from "../services/Service"
 import type { UsuarioLogin } from "../models/UsuarioLogin"
+import { ToastAlerta } from "../utils/ToastAlert"
 
 interface AuthContextProps {
     usuario: UsuarioLogin
@@ -27,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 const dadosRedirecionados = JSON.parse(usuarioPersistido);
                 setUsuario(dadosRedirecionados);
             } catch (error) {
-                console.error("Erro ao recuperar dados da sessão");
+                ToastAlerta('Erro ao recuperar dados da sessão', 'erro');
                 handleLogout();
             }
         }
@@ -42,10 +43,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 localStorage.setItem("token", resposta.token)
                 localStorage.setItem("usuarioDados", JSON.stringify(resposta)) 
             })
-
-            alert("Login realizado com sucesso!")
+            ToastAlerta('Login realizado com sucesso!', 'sucesso');
+            
         } catch (error) {
-            alert("Erro: Verifique suas credenciais.")
+            ToastAlerta('Erro: verifique suas credenciais.', 'erro');
         }
         setIsLoading(false)
     }

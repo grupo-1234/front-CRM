@@ -12,10 +12,12 @@ import ListaCategorias from "./components/categorias/listaCategorias/ListaCatego
 import { AuthProvider } from "./contexts/AuthContext";
 import ListaProdutos from "./pages/produto/Produto";
 import Planos from "./pages/Planos";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <AuthProvider>
+      <ToastContainer />
       <BrowserRouter>
         <Navbar />
 
