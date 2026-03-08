@@ -183,7 +183,7 @@ function Login() {
         
         <div className="relative z-20">
           <h1 className="text-6xl font-extrabold tracking-tight leading-tight mb-6">
-            Gerencie seus leads com <span className="text-indigo-400">inteligência</span>.
+            Gerencie seus clientes com <span className="text-indigo-400">inteligência</span>.
           </h1>
           <p className="text-2xl text-slate-300 font-light max-w-xl">
             A plataforma definitiva para transformar contatos em contratos fechados com organização e velocidade.

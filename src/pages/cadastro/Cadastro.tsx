@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { RotatingLines } from 'react-loader-spinner'
 import type { Usuario } from '../../models/Usuario'
 import { cadastrarUsuario } from '../../services/Service'
+import { ToastAlerta } from '../../utils/ToastAlert'
 
 
 function Cadastro() {
@@ -38,12 +39,12 @@ function Cadastro() {
       setIsLoading(true)
       try {
         await cadastrarUsuario(`/usuarios/cadastrar`, usuario, setUsuario)
-        alert('Usuário cadastrado com sucesso!')
+        ToastAlerta('Usuário cadastrado com sucesso!', 'success');
       } catch (error) {
-        alert('Erro ao cadastrar o Usuário')
+        ToastAlerta('Erro ao cadastrar o usuário!.', 'erro');
       }
     } else {
-      alert('Dados inconsistentes. Verifique a senha.')
+      ToastAlerta('Dados inconsistentes!', 'info');
     }
     setIsLoading(false)
   }
@@ -78,8 +79,8 @@ function Cadastro() {
             name="foto"
             placeholder="Link da sua foto de perfil"
             className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-indigo-500 transition-all"
+            onError = { (e) => e.currentTarget.src = 'https://ik.imagekit.io/dvkwsy8r1/user.png'}
             value={usuario.foto}
-            onChange={atualizarEstado}
           />
           </div>
           <div className="flex flex-col w-full">
