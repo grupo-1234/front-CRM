@@ -136,6 +136,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { RotatingLines } from 'react-loader-spinner';
 import type { UsuarioLogin } from '../../models/UsuarioLogin';
+import { ToastAlerta } from '../../utils/ToastAlert';
 
 function Login() {
   const navigate = useNavigate();
@@ -152,9 +153,8 @@ function Login() {
 
   useEffect(() => {
 
-    console.log("Token recebido após login:", usuario.token);
-
     if (usuario.token !== "") {
+      ToastAlerta('Usuário cadastrado com sucesso!', 'success');
       navigate('/home');
     }
   }, [usuario, navigate]);
@@ -168,9 +168,6 @@ function Login() {
 
   function login(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    console.log("Dados enviados para login:", usuarioLogin);
-
     handleLogin(usuarioLogin);
   }
 
