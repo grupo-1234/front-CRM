@@ -1,73 +1,156 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# ConectaCRM
 
-Currently, two official plugins are available:
+**ConectaCRM** é um sistema de **gestão de leads e projetos para desenvolvedores freelancers**.  
+A plataforma permite organizar oportunidades de trabalho em um **painel visual estilo Kanban**, facilitando o acompanhamento de clientes, negociações e serviços em andamento.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A proposta é simples: ajudar desenvolvedores a **organizar seus leads, controlar valores de projetos e acompanhar o status de cada negociação em um único lugar.**
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Problema que o projeto resolve
 
-## Expanding the ESLint configuration
+Muitos desenvolvedores freelancers enfrentam dificuldades como:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Leads espalhados em **WhatsApp, e-mail e anotações**
+- Falta de organização de **clientes e propostas**
+- Dificuldade para acompanhar **negociações em andamento**
+- Perda de oportunidades por falta de controle
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+O **ConectaCRM** resolve isso centralizando todas as informações em um **painel visual simples e organizado.**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Funcionalidades
+
+- Cadastro de usuário
+- Criação de **categorias personalizadas**
+- Organização em **quadros estilo Kanban**
+- Cadastro de **novos leads**
+- Definição de **valor do serviço**
+- Atualização do **status da negociação**
+- Gerenciamento completo de **cards**
+
+### Exemplo de fluxo
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Novo Lead → Em Contato → Negociação → Fechado → Entregue
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+
+---
+
+# Tecnologias utilizadas
+
+## Frontend
+
+- React
+- TypeScript
+- Vite
+- TailwindCSS
+- React Router
+
+## Backend (API)
+
+- Node.js
+- NestJS
+- TypeScript
+- API REST
+
+---
+
+# Estrutura do projeto
+
+```
+
+src
+├── assets
+├── components
+├── models
+├── pages
+├── services
+├── routes
+└── App.tsx
+
+````
+
+---
+
+# Instalação do projeto
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/seu-usuario/conecta-crm.git
+````
+
+Entre na pasta do projeto:
+
+```bash
+cd conecta-crm
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+---
+
+# Rodando o projeto
+
+Para iniciar o ambiente de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+O projeto estará disponível em:
+
+```
+http://localhost:5173
+```
+
+---
+
+# Lint e qualidade de código
+
+O projeto utiliza **ESLint com suporte a TypeScript** para manter qualidade e padronização de código.
+
+Configuração recomendada para aplicações em produção:
+
+* `typescript-eslint`
+* `eslint-plugin-react-x`
+* `eslint-plugin-react-dom`
+
+
+# Objetivo do projeto
+
+O **ConectaCRM** foi desenvolvido como parte da evolução prática em desenvolvimento **Full Stack**, com foco em:
+
+* Arquitetura de aplicações
+* Organização de código
+* Integração **Frontend + Backend**
+* Desenvolvimento de **aplicações reais**
+
+# Possíveis melhorias futuras
+
+* Dashboard com métricas de vendas
+* Drag and drop nos cards (Kanban)
+* Notificações de leads
+* Integração com WhatsApp ou e-mail
+* Versão mobile
+
+# Tecnologias principais
+
+* Node.js
+* TypeScript
+* NestJS
+* React
+* TailwindCSS
+
+```
+
+
