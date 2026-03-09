@@ -38,7 +38,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsLoading(true)
         try {
             await login(`/usuarios/logar`, userLogin, (resposta: UsuarioLogin) => {
-                setUsuario(resposta)
+                
+                const tokenLimpo = resposta.token.replace("Bearer ", "");
+
+                setUsuario({ ...resposta, token: tokenLimpo });
                 
                 localStorage.setItem("token", resposta.token)
                 localStorage.setItem("usuarioDados", JSON.stringify(resposta)) 

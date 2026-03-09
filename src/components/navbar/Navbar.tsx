@@ -65,13 +65,6 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
             >
               Categorias
             </button>
-
-            <button
-              onClick={() => navegarProtegido("/recursos")}
-              className="hover:text-[#1675F2] transition"
-            >
-              Recursos
-            </button>
           </div>
 
           {/*PERFIL / LOGIN*/}
