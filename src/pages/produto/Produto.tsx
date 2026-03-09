@@ -106,9 +106,12 @@ function ListaProdutos() {
   }
 
   const leadsFiltrados = produtos.filter(p => {
-    const nomeOk = p.nomeProduto.toLowerCase().includes(busca.toLowerCase());
-    const categoriaOk = categoriaSelecionada === '' || p.categoria?.id.toString() === categoriaSelecionada;
-    return nomeOk && categoriaOk;
+      const ehMeuProduto = p.usuario?.id === usuario.id; 
+      
+      const nomeOk = p.nomeProduto.toLowerCase().includes(busca.toLowerCase());
+      const categoriaOk = categoriaSelecionada === '' || p.categoria?.id.toString() === categoriaSelecionada;
+      
+      return ehMeuProduto && nomeOk && categoriaOk;
   });
 
   const getColuna = (descricao: string) => {

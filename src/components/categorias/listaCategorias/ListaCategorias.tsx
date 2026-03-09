@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react'; // Adicionado useContext
 import type { Categoria } from '../../../models/Categoria';
 import type { Produto } from '../../../models/Produto';
 import { buscar } from '../../../services/Service';
@@ -6,6 +6,7 @@ import CardCategorias from '../cardCategorias/CardCategorias';
 import { Plus, Search } from 'lucide-react'; 
 import FormCategoria from '../formCategoria/FormCategoria';
 import DeletarCategoria from '../deletarCategoria/DeletarCategoria';
+import { AuthContext } from '../../../contexts/AuthContext'; // Importado AuthContext
 
 function ListaCategorias() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -15,6 +16,9 @@ function ListaCategorias() {
   const [idSelecionado, setIdSelecionado] = useState<string | undefined>(undefined);
   const [isDeletarOpen, setIsDeletarOpen] = useState(false);
   const [idParaDeletar, setIdParaDeletar] = useState<string | undefined>(undefined);
+
+  // CORREÇÃO: Pegando o usuário logado do contexto para usar no filtro de privacidade
+  const { usuario } = useContext(AuthContext);
 
   function abrirNovo() {
     setIdSelecionado(undefined);
@@ -36,7 +40,6 @@ function ListaCategorias() {
       const token = localStorage.getItem("token");
       const header = { headers: { Authorization: token } };
       
-      // Busca categorias e produtos simultaneamente
       await buscar('/categoria', setCategorias, header);
       await buscar('/produtos', setProdutos, header);
     } catch (error) {
@@ -92,8 +95,11 @@ function ListaCategorias() {
                 categoria={categoria} 
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                // Filtra produtos pelo ID da categoria para contar serviços
-                totalServicos={produtos.filter(p => p.categoria?.id === categoria.id).length}
+                // REGRA DE PRIVACIDADE: Agora 'usuario.id' está definido e o filtro funciona
+                totalServicos={produtos.filter(p => 
+                    p.categoria?.id === categoria.id && 
+                    p.usuario?.id === usuario.id 
+                ).length}
               />
             ))}
           </div>
