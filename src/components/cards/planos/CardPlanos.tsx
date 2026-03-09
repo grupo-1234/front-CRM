@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 interface CardPlanosProps {
     titulo: string
     preco: string
@@ -58,9 +60,12 @@ cor
 
         </div>
 
-        <button className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-md">
-          Selecionar
-        </button>
+       <Link 
+          to="/login" 
+          className="w-full bg-[#1675F2] text-white py-2 rounded-lg font-bold hover:bg-[#1464CC] transition-all text-center block"
+      >
+          Assinar Agora
+      </Link>
 
       </div>
     </div>

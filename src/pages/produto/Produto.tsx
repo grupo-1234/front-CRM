@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useContext } from 'react';
 import { Search, Plus, LayoutDashboard } from 'lucide-react';
 import type { Produto } from '../../models/Produto';
@@ -46,10 +45,10 @@ function ListaProdutos() {
     
     const produtoAtualizado = { 
         ...produto, 
-        status: !produto.status, // Inverte o status atual
+        status: !produto.status,
         preco: Number(produto.preco),
         categoria: { id: produto.categoria?.id },
-        usuario: { id: usuario.id } // Vincula ao usuário logado no contexto
+        usuario: { id: usuario.id }
     };
 
     try {
@@ -71,7 +70,7 @@ function ListaProdutos() {
       const descLimpa = produtoArrastado.descricao.replace(/\[.*?\]/g, '').trim();
       const produtoAtualizado = {
           ...produtoArrastado,
-          descricao: `[${novaColuna}] ${descLimpa}`, // Atualiza a tag da coluna na descrição
+          descricao: `[${novaColuna}] ${descLimpa}`,
           preco: Number(produtoArrastado.preco),
           categoria: { id: produtoArrastado.categoria?.id },
           usuario: { id: usuario.id }
