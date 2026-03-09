@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-wrapper-object-types */
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://crm-generation.onrender.com"
+  baseURL: import.meta.env.VITE_API_URL
 });
 
 export const buscar = async (url: string, setDados: Function, header?: Object) => {
