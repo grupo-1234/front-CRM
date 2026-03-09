@@ -24,7 +24,7 @@ cor
       {/* card */}
       <div className="relative bg-white shadow-xl rounded-xl p-8 flex flex-col items-center gap-6">
 
-        <h2 className="text-3xl font-light text-gray-700">
+        <h2 className="text-3xl font-semibold text-gray-700">
           {titulo}
         </h2>
 
@@ -48,7 +48,7 @@ cor
 
         <div className="text-center">
 
-          <p className="text-4xl font-light text-gray-700">
+          <p className="text-4xl font-semibold text-gray-700">
             {preco}
           </p>
 

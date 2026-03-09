@@ -36,7 +36,7 @@ export default function Planos() {
               "Integrações externas",
               "Dashboard de receita"
             ]}
-            cor="bg-teal-500"
+            cor="bg-crm-roxo"
           />
 
           <CardPlanos
@@ -53,7 +53,7 @@ export default function Planos() {
               "Automação avançada",
               "Integrações com ferramentas externas"
             ]}
-            cor="bg-blue-500"
+            cor="bg-crm-azul"
           />
 
           <CardPlanos
@@ -67,7 +67,7 @@ export default function Planos() {
               "Integração com ferramentas externas",
               "Gestão de múltiplos projetos"
             ]}
-            cor="bg-red-500"
+            cor="bg-crm-rosa"
           />
 
         </div>
