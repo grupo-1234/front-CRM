@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { ToastAlerta } from '../../../utils/ToastAlert';
 import { atualizar } from '../../../services/Service';
 import type { Usuario } from '../../../models/Usuario';
+import type { UsuarioLogin } from '../../../models/UsuarioLogin';
 
 interface EditarPerfilProps {
     open: boolean;
@@ -13,19 +15,22 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
     
     const { usuario, setUsuario } = useContext(AuthContext);
 
+    // Inicializamos garantindo que os campos obrigatórios tenham ao menos uma string vazia
     const [usuarioEdit, setUsuarioEdit] = useState<Usuario>({
         ...usuario,
         foto: usuario.foto || '', 
-        senha: '' 
+        senha: usuario.senha || '' 
     });
 
     useEffect(() => {
-        setUsuarioEdit({
-            ...usuario,
-            foto: usuario.foto || '',
-            senha: ''
-        });
-    }, [usuario]);
+        if (open) {
+            setUsuarioEdit({
+                ...usuario,
+                foto: usuario.foto || '',
+                senha: usuario.senha || ''
+            });
+        }
+    }, [usuario, open]);
 
     function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         setUsuarioEdit({
@@ -37,24 +42,41 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
     async function atualizarDados(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        // Garantimos que a senha e o perfil não sejam undefined ou vazios antes de enviar
+        const senhaFinal = usuarioEdit.senha || usuario.senha || '';
+        const perfilFinal = usuarioEdit.perfil || usuario.perfil || '';
+
+        const dadosParaEnviar = {
+            ...usuarioEdit,
+            senha: senhaFinal,
+            perfil: perfilFinal
+        };
+
         try {
-            await atualizar(`/usuarios/atualizar`, usuarioEdit, setUsuarioEdit, {
+            await atualizar(`/usuarios/atualizar`, dadosParaEnviar, setUsuarioEdit, {
                 headers: {
                     Authorization: usuario.token,
                 },
             });
 
-            setUsuario({
-                ...usuarioEdit,
-                token: usuario.token,
-                senha: usuarioEdit.senha || '', 
-                foto: usuarioEdit.foto || '', 
-            });
+            // Criamos o objeto no formato UsuarioLogin para evitar erro de tipo no setUsuario
+            const usuarioAtualizado: UsuarioLogin = {
+                id: dadosParaEnviar.id,
+                nome: dadosParaEnviar.nome,
+                usuario: dadosParaEnviar.usuario,
+                perfil: dadosParaEnviar.perfil,
+                foto: dadosParaEnviar.foto,
+                senha: senhaFinal, // Garantido como string
+                token: usuario.token
+            };
+            
+            setUsuario(usuarioAtualizado);
+            localStorage.setItem("usuarioDados", JSON.stringify(usuarioAtualizado));
 
             ToastAlerta('Perfil atualizado com sucesso!', 'sucesso');
             setOpen(false);
         } catch (error: any) {
-            ToastAlerta('Erro ao atualizar o Perfil.', 'erro');
+            ToastAlerta('Erro ao atualizar o Perfil. Verifique se todos os campos estão preenchidos.', 'erro');
         }
     }
 
@@ -64,7 +86,7 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
         <div className='fixed inset-0 z-50 grid place-content-center bg-black/50 p-4' role="dialog" aria-modal="true">
             <form 
                 onSubmit={atualizarDados}
-                className='w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg flex flex-col items-center px-10 md:px-20'
+                className='w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg flex flex-col items-center px-10 md:px-20 animate-in fade-in zoom-in duration-200'
             >
                 <h2 className='text-xl font-bold text-gray-900 sm:text-2xl'>Informações Pessoais</h2>
                 <div className='mt-2 flex flex-col w-full text-center'>
@@ -125,7 +147,22 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
                             value={usuarioEdit.foto}
                             onChange={atualizarEstado}
                             className="p-3 w-full rounded border border-gray-300 outline-none focus:border-[#1675F2]" 
-                            placeholder='Link da imagem (Ex: ImageKit, Cloudinary)' 
+                            placeholder='Link da imagem' 
+                        />
+                    </div>
+
+                    {/* Campo de Senha para validação do Backend */}
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="senha" className='text-sm font-medium text-gray-700'>Confirmar Senha</label>
+                        <input 
+                            type="password" 
+                            id="senha"
+                            name="senha"
+                            value={usuarioEdit.senha}
+                            onChange={atualizarEstado}
+                            className="p-3 w-full rounded border border-gray-300 outline-none focus:border-[#1675F2]" 
+                            placeholder="Sua senha atual ou nova"
+                            required
                         />
                     </div>
                 </div>
