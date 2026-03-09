@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import { Trash2, X, AlertTriangle } from 'lucide-react';
+import { Trash2, AlertTriangle } from 'lucide-react';
 import { deletar } from '../../../../services/Service';
 import { ToastAlerta } from '../../../../utils/ToastAlert';
 

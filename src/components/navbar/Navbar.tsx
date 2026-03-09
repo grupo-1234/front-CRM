@@ -3,11 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { List, X, CurrencyEth, SignOut } from "@phosphor-icons/react";
 import { AuthContext } from "../../contexts/AuthContext";
 
-interface NavbarProps {
-  onOpenModal?: (titulo: string) => void;
-}
-
-export default function Navbar({ onOpenModal }: NavbarProps) {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { usuario, handleLogout } = useContext(AuthContext);
