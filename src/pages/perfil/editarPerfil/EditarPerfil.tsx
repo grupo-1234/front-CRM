@@ -15,11 +15,10 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
     
     const { usuario, setUsuario } = useContext(AuthContext);
 
-    // Inicializamos garantindo que os campos obrigatórios tenham ao menos uma string vazia
     const [usuarioEdit, setUsuarioEdit] = useState<Usuario>({
         ...usuario,
         foto: usuario.foto || '', 
-        senha: usuario.senha || '' 
+        senha: '' 
     });
 
     useEffect(() => {
@@ -27,56 +26,48 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
             setUsuarioEdit({
                 ...usuario,
                 foto: usuario.foto || '',
-                senha: usuario.senha || ''
+                senha: ''
             });
         }
     }, [usuario, open]);
 
     function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-        setUsuarioEdit({
-            ...usuarioEdit,
-            [e.target.name]: e.target.value
-        });
-    }
+            setUsuarioEdit({
+                ...usuarioEdit,
+                [e.target.name]: e.target.value
+            });
+        }
 
-    async function atualizarDados(e: FormEvent<HTMLFormElement>) {
+        async function atualizarDados(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        // Garantimos que a senha e o perfil não sejam undefined ou vazios antes de enviar
-        const senhaFinal = usuarioEdit.senha || usuario.senha || '';
-        const perfilFinal = usuarioEdit.perfil || usuario.perfil || '';
+        const senhaSegura: string = usuarioEdit.senha || usuario.senha || '';
 
-        const dadosParaEnviar = {
+        const usuarioParaEnviar = {
             ...usuarioEdit,
-            senha: senhaFinal,
-            perfil: perfilFinal
+            senha: senhaSegura 
         };
 
         try {
-            await atualizar(`/usuarios/atualizar`, dadosParaEnviar, setUsuarioEdit, {
+            await atualizar(`/usuarios/atualizar`, usuarioParaEnviar, setUsuarioEdit, {
                 headers: {
                     Authorization: usuario.token,
                 },
             });
 
-            // Criamos o objeto no formato UsuarioLogin para evitar erro de tipo no setUsuario
-            const usuarioAtualizado: UsuarioLogin = {
-                id: dadosParaEnviar.id,
-                nome: dadosParaEnviar.nome,
-                usuario: dadosParaEnviar.usuario,
-                perfil: dadosParaEnviar.perfil,
-                foto: dadosParaEnviar.foto,
-                senha: senhaFinal, // Garantido como string
-                token: usuario.token
+            const novoUsuarioDados: UsuarioLogin = {
+                ...usuarioParaEnviar,
+                senha: senhaSegura, 
+                token: usuario.token,
             };
             
-            setUsuario(usuarioAtualizado);
-            localStorage.setItem("usuarioDados", JSON.stringify(usuarioAtualizado));
+            setUsuario(novoUsuarioDados);
+            localStorage.setItem("usuarioDados", JSON.stringify(novoUsuarioDados));
 
             ToastAlerta('Perfil atualizado com sucesso!', 'sucesso');
             setOpen(false);
         } catch (error: any) {
-            ToastAlerta('Erro ao atualizar o Perfil. Verifique se todos os campos estão preenchidos.', 'erro');
+            ToastAlerta('Erro ao atualizar o Perfil.', 'erro');
         }
     }
 
@@ -151,7 +142,6 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
                         />
                     </div>
 
-                    {/* Campo de Senha para validação do Backend */}
                     <div className="flex flex-col gap-1">
                         <label htmlFor="senha" className='text-sm font-medium text-gray-700'>Confirmar Senha</label>
                         <input 
@@ -161,7 +151,7 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
                             value={usuarioEdit.senha}
                             onChange={atualizarEstado}
                             className="p-3 w-full rounded border border-gray-300 outline-none focus:border-[#1675F2]" 
-                            placeholder="Sua senha atual ou nova"
+                            placeholder="Confirme para salvar as alterações"
                             required
                         />
                     </div>
