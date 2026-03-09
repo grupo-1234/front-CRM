@@ -3,6 +3,7 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import type { Categoria } from '../../../models/Categoria';
 import { atualizar, buscar, cadastrar } from '../../../services/Service';
 import { X, FolderPlus, Save } from 'lucide-react';
+import { ToastAlerta } from '../../../utils/ToastAlert';
 
 interface FormCategoriaProps {
   open: boolean;
@@ -25,7 +26,7 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
         headers: { Authorization: token }
       });
     } catch (error) {
-      console.error("Erro ao buscar categoria");
+      ToastAlerta('Erro ao buscar categoria!.', 'erro');
     }
   }
 
@@ -62,7 +63,7 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
       setOpen(false);
       window.location.reload(); 
     } catch (error: any) {
-      alert('Erro ao salvar a Categoria');
+      ToastAlerta('Erro ao salvar a categoria.', 'erro');
     }
   }
 

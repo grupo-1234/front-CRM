@@ -136,6 +136,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { RotatingLines } from 'react-loader-spinner';
 import type { UsuarioLogin } from '../../models/UsuarioLogin';
+import { ToastAlerta } from '../../utils/ToastAlert';
 
 function Login() {
   const navigate = useNavigate();
@@ -152,8 +153,6 @@ function Login() {
 
   useEffect(() => {
 
-    console.log("Token recebido após login:", usuario.token);
-
     if (usuario.token !== "") {
       navigate('/home');
     }
@@ -168,9 +167,6 @@ function Login() {
 
   function login(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    console.log("Dados enviados para login:", usuarioLogin);
-
     handleLogin(usuarioLogin);
   }
 
@@ -183,7 +179,7 @@ function Login() {
         
         <div className="relative z-20">
           <h1 className="text-6xl font-extrabold tracking-tight leading-tight mb-6">
-            Gerencie seus leads com <span className="text-indigo-400">inteligência</span>.
+            Gerencie seus clientes com <span className="text-indigo-400">inteligência</span>.
           </h1>
           <p className="text-2xl text-slate-300 font-light max-w-xl">
             A plataforma definitiva para transformar contatos em contratos fechados com organização e velocidade.
@@ -242,13 +238,16 @@ function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 bg-[#1675F2] hover:bg-[#148DD9] text-white font-bold rounded-full shadow-lg shadow-indigo-200 transition-all transform active:scale-[0.98] flex justify-center items-center disabled:opacity-70"
+              className="w-full py-2.5 bg-[#1675F2] hover:bg-[#148DD9] text-white font-bold rounded-full shadow-lg shadow-indigo-200 
+              transition-all transform active:scale-[0.98] flex justify-center items-center disabled:opacity-70"
             >
               {isLoading ? (
-                <RotatingLines strokeColor="white" strokeWidth="5" width="24" visible={true} />
-              ) : (
-                "Entrar no Painel"
-              )}
+              <div className="flex items-center justify-center h-5">
+                <RotatingLines strokeColor="white" strokeWidth="5" width="20" visible={true} />
+              </div>
+            ) : (
+              "Entrar no Painel"
+            )}
             </button>
           </form>
 

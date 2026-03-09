@@ -5,6 +5,7 @@ import type { Categoria } from '../../../../models/Categoria';
 import type { Produto } from '../../../../models/Produto';
 import { atualizar, buscar, cadastrar } from '../../../../services/Service';
 import { AuthContext } from '../../../../contexts/AuthContext';
+import { ToastAlerta } from '../../../../utils/ToastAlert';
 
 interface FormProdutoProps {
   open: boolean;
@@ -89,7 +90,7 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
   const token = localStorage.getItem("token");
   
   if (!token || !usuario.id) {
-    alert("Sessão expirada. Por favor, faça login novamente.");
+    ToastAlerta('Sessão expirada. Por favor, faça login novamente.', 'info');
     return;
   }
 
@@ -124,7 +125,7 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
 
   } catch (error: any) {
     console.error("Erro no cadastro:", error);
-    alert('Erro ao salvar o Lead. Verifique os dados ou sua conexão.');
+    ToastAlerta('Erro ao salvar o cliente. Verifique os dados ou sua conexão.', 'erro');
   }
 }
 

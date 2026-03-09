@@ -83,7 +83,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
                   className="flex items-center gap-3 bg-white border border-gray-200 py-1.5 pl-2 pr-4 rounded-full shadow-sm hover:border-[#1675F2] transition-all"
                 >
                   <img
-                    src={usuario.foto || "https://i.imgur.com/8RK9k6u.png"}
+                    src={usuario.foto || "https://ik.imagekit.io/dvkwsy8r1/user.png"}
                     alt={usuario.nome}
                     className="w-8 h-8 rounded-full object-cover border border-[#1675F2]"
                   />
@@ -157,7 +157,7 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
                 className="flex flex-col items-center gap-2"
               >
                 <img
-                  src={usuario.foto || "https://i.imgur.com/8RK9k6u.png"}
+                  src={usuario.foto || "https://ik.imagekit.io/dvkwsy8r1/user.png"}
                   className="w-12 h-12 rounded-full border border-[#1675F2]"
                 />
                 <span className="font-bold">{usuario.nome}</span>
