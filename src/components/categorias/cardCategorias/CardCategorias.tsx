@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PencilLine, Trash } from 'lucide-react'
 import type { Categoria } from '../../../models/Categoria'
 
 interface CardCategoriaProps {
   categoria: Categoria
-  onEdit: (id: string) => void
-  onDelete: (id: string) => void // Adicionado para resolver o erro de tipagem
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  totalServicos: number; // Esta é a prop correta
 }
 
-function CardCategorias({ categoria, onEdit, onDelete }: CardCategoriaProps) {
+// CORREÇÃO: Você deve incluir 'totalServicos' aqui na desestruturação
+function CardCategorias({ categoria, onEdit, onDelete, totalServicos }: CardCategoriaProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-6 py-4 hover:bg-slate-50 transition-colors duration-200 text-sm">
       
@@ -31,7 +34,8 @@ function CardCategorias({ categoria, onEdit, onDelete }: CardCategoriaProps) {
       {/* Contador de Serviços (Produtos) */}
       <div className="md:col-span-1 flex justify-center">
         <span className="bg-blue-50 text-[#1675F2] px-2.5 py-0.5 rounded-full text-xs font-bold border border-blue-100">
-          {categoria.produto?.length || 0}
+          {/* CORREÇÃO: Use a prop 'totalServicos' passada pelo pai */}
+          {totalServicos}
         </span>
       </div>
 
