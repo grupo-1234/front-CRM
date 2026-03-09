@@ -22,7 +22,7 @@ export default function Planos() {
         <div className="flex flex-wrap justify-center gap-12">
 
           <CardPlanos
-            titulo="Dev Junior"
+            titulo="Junior"
             preco="R$97,99"
             vantagens={[
               "Gestão de até 10 clientes",
@@ -40,7 +40,7 @@ export default function Planos() {
           />
 
           <CardPlanos
-            titulo="Dev Pleno"
+            titulo="Pleno"
             preco="R$197,99"
             vantagens={[
               "Gestão ilimitada de clientes",
@@ -57,7 +57,7 @@ export default function Planos() {
           />
 
           <CardPlanos
-            titulo="Dev Senior"
+            titulo="Senior"
             preco="R$297,99"
             vantagens={[
               "Clientes e negociações ilimitados",
