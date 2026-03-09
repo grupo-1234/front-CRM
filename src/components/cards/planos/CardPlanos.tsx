@@ -52,7 +52,7 @@ cor
             {preco}
           </p>
 
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-gray-400 pt-2">
             Por Mês
           </p>
 
