@@ -108,13 +108,12 @@ export default function Navbar() {
                   to="/cadastro"
                   className="bg-[#1675F2] hover:bg-[#148DD9] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition"
                 >
-                  Teste Grátis
+                  Criar Conta
                 </Link>
               </>
             )}
           </div>
 
-          {/*BOTÃO MOBILE*/}
           <div className="lg:hidden">
             <button onClick={toggleMenu}>
               {isOpen ? <X size={26} weight="bold" /> : <List size={26} weight="bold" />}
@@ -136,7 +135,6 @@ export default function Navbar() {
 
           <button onClick={() => navegarProtegido("/produtos")}>Produtos</button>
           <button onClick={() => navegarProtegido("/categoria")}>Categorias</button>
-          <button onClick={() => navegarProtegido("/recursos")}>Recursos</button>
 
           {usuario.token !== "" ? (
             <>

@@ -13,6 +13,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ListaProdutos from "./pages/produto/Produto";
 import Planos from "./pages/Planos";
 import { ToastContainer } from "react-toastify";
+import Contato from "./pages/contato/Contato";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/categoria" element={<ListaCategorias />} />
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/planos" element={<Planos />} />
+            <Route path="/contato" element={<Contato />} />
           </Routes>
         </div>
 

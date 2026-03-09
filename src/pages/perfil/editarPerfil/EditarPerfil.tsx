@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { ToastAlerta } from '../../../utils/ToastAlert';
@@ -22,14 +21,15 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
     });
 
     useEffect(() => {
-        if (open) {
+    if (open) {
             setUsuarioEdit({
                 ...usuario,
                 foto: usuario.foto || '',
-                senha: ''
+                senha: '', 
+                perfil: usuario.perfil || ''
             });
         }
-    }, [usuario, open]);
+    }, [open, usuario]);
 
     function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
             setUsuarioEdit({
@@ -41,11 +41,13 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
         async function atualizarDados(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        const senhaSegura: string = usuarioEdit.senha || usuario.senha || '';
+        const senhaFinal = usuarioEdit.senha || usuario.senha || '';
+        const perfilFinal = usuarioEdit.perfil || usuario.perfil || '';
 
         const usuarioParaEnviar = {
             ...usuarioEdit,
-            senha: senhaSegura 
+            senha: senhaFinal, 
+            perfil: perfilFinal
         };
 
         try {
@@ -57,7 +59,7 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
 
             const novoUsuarioDados: UsuarioLogin = {
                 ...usuarioParaEnviar,
-                senha: senhaSegura, 
+                senha: senhaFinal, 
                 token: usuario.token,
             };
             
@@ -80,10 +82,7 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
                 className='w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg flex flex-col items-center px-10 md:px-20 animate-in fade-in zoom-in duration-200'
             >
                 <h2 className='text-xl font-bold text-gray-900 sm:text-2xl'>Informações Pessoais</h2>
-                <div className='mt-2 flex flex-col w-full text-center'>
-                    <p className="text-pretty text-gray-700">Mantenha seus dados atualizados no conecta<span className="text-[#1675F2]">crm</span>.</p>
-                </div>
-
+                
                 <div className="flex flex-col w-full gap-4 pt-5">
                     <div className="flex flex-col gap-1">
                         <label htmlFor="nome" className='text-sm font-medium text-gray-700'>Nome Completo</label>
@@ -138,7 +137,6 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
                             value={usuarioEdit.foto}
                             onChange={atualizarEstado}
                             className="p-3 w-full rounded border border-gray-300 outline-none focus:border-[#1675F2]" 
-                            placeholder='Link da imagem' 
                         />
                     </div>
 
@@ -151,7 +149,7 @@ function EditarPerfil({ open, setOpen }: EditarPerfilProps) {
                             value={usuarioEdit.senha}
                             onChange={atualizarEstado}
                             className="p-3 w-full rounded border border-gray-300 outline-none focus:border-[#1675F2]" 
-                            placeholder="Confirme para salvar as alterações"
+                            placeholder="Sua senha para confirmar"
                             required
                         />
                     </div>

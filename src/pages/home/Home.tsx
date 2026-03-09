@@ -1,6 +1,7 @@
 
 import { CaretRight, Check } from "@phosphor-icons/react";
 import pessoas from "../../assets/pessoas.png";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -21,26 +22,21 @@ function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            <button className="bg-gradient-to-r from-[#2563EB] to-[#EC4899]
-              hover:from-[#1D4ED8] hover:to-[#DB2777]
-              text-white px-8 py-4 rounded-xl font-semibold
-              flex items-center justify-center gap-2
-              transition-all duration-300
-              shadow-lg hover:shadow-2xl
-              hover:-translate-y-1 hover:scale-105">
-              Começar gratuitamente
-              <CaretRight size={20} weight="bold" />
-            </button>
+                  <Link 
+              to="/login"
+              className="bg-[#1675F2] text-white px-8 py-3 rounded-full font-bold hover:bg-[#1464CC] transition-all shadow-lg"
+          >
+              Começar Gratuitamente
+          </Link>
 
-            <button
-              className="border-2 border-[#2563EB] text-[#2563EB]
-              px-8 py-4 rounded-xl font-semibold
-              transition-all duration-300
-              hover:bg-[#2563EB] hover:text-white
-              hover:shadow-xl hover:-translate-y-1 hover:scale-105"
+            <a 
+                href="https://www.youtube.com/seu-link-aqui" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-white text-[#1675F2] border-2 border-[#1675F2] px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-all"
             >
-              Ver demonstração
-            </button>
+                Ver Demonstração
+            </a>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-6 text-sm text-gray-700">
