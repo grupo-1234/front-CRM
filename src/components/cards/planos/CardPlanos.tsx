@@ -39,7 +39,7 @@ cor
 
           {desvantagens?.map((item, index) => (
             <li key={index} className="flex gap-2">
-              <span className="text-red-500">✖</span>
+              <span className="text-red-500">X</span>
               {item}
             </li>
           ))}
