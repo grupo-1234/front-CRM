@@ -37,14 +37,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function handleLogin(userLogin: UsuarioLogin) {
         setIsLoading(true)
         try {
-            await login(`/usuarios/logar`, userLogin, (resposta: UsuarioLogin) => {
+            // AJUSTE DE ROTA: Alterado de '/usuarios/logar' para '/auth/logar' para alinhar com o NestJS
+            await login(`/auth/logar`, userLogin, (resposta: UsuarioLogin) => {
                 
+                // Remove o prefixo "Bearer " se ele vier da API, deixando apenas a string do Hash
                 const tokenLimpo = resposta.token.replace("Bearer ", "");
 
-                setUsuario({ ...resposta, token: tokenLimpo });
+                const dadosUsuarioAutenticado = { ...resposta, token: tokenLimpo };
+
+                setUsuario(dadosUsuarioAutenticado);
                 
-                localStorage.setItem("token", resposta.token)
-                localStorage.setItem("usuarioDados", JSON.stringify(resposta)) 
+                // Persiste o token puro e o objeto limpo para evitar duplicações no recarregamento (useEffect)
+                localStorage.setItem("token", tokenLimpo)
+                localStorage.setItem("usuarioDados", JSON.stringify(dadosUsuarioAutenticado)) 
             })
             ToastAlerta('Login realizado com sucesso!', 'sucesso');
             

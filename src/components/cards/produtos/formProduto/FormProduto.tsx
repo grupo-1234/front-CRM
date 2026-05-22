@@ -41,7 +41,7 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
       await buscar('/categoria', setCategorias, { headers: { Authorization: token } });
       
       if (id !== undefined) {
-        await buscar(`/produtos/${id}`, (data: Produto) => {
+        await buscar(`/produto/${id}`, (data: Produto) => {
           const match = data.descricao.match(/\[(.*?)\]/);
           if (match) setColunaSel(match[1].toUpperCase());
           
@@ -99,10 +99,10 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
 
     try {
       if (id !== undefined) {
-        await atualizar(`/produtos`, produtoParaEnviar, setProduto, { headers: { Authorization: token } });
+        await atualizar(`/produto`, produtoParaEnviar, setProduto, { headers: { Authorization: token } });
       } else {
         const { id: _, ...novoProduto } = produtoParaEnviar;
-        await cadastrar(`/produtos`, novoProduto, setProduto, { headers: { Authorization: token } });
+        await cadastrar(`/produto`, novoProduto, setProduto, { headers: { Authorization: token } });
       }
       setOpen(false);
       setTimeout(() => { window.location.reload(); }, 800);
