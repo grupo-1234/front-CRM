@@ -54,7 +54,7 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
       
       if (id !== undefined) {
         // Busca o lead específico usando a rota singular (/produto/:id)
-        await buscar(`/produto/${id}`, (data: Produto) => {
+        await buscar(`/produtos/${id}`, (data: Produto) => {
           const match = data.descricao.match(/\[(.*?)\]/);
           if (match) setColunaSel(match[1].toUpperCase());
           
@@ -113,7 +113,7 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
     try {
       if (id !== undefined) {
         // Atualiza o lead na rota singular (/produto)
-        await atualizar(`/produto`, produtoParaEnviar, setProduto, headers);
+        await atualizar(`/produtos`, produtoParaEnviar, setProduto, headers);
       } else {
         const { id: _, ...novoProduto } = produtoParaEnviar;
         // Cadastra o lead na rota singular (/produto)
