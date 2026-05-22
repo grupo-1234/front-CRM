@@ -35,12 +35,25 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
 
   const obterDescricaoLimpa = (desc: string) => desc.replace(/\[.*?\]/g, '');
 
+  // Função centralizada para recuperar o header perfeitamente formatado
+  const obterHeaderAutenticado = () => {
+    const token = localStorage.getItem("token");
+    return {
+      headers: {
+        Authorization: token?.startsWith('Bearer ') ? token : `Bearer ${token}`
+      }
+    };
+  };
+
   async function carregarDados() {
     try {
-      const token = localStorage.getItem("token");
-      await buscar('/categoria', setCategorias, { headers: { Authorization: token } });
+      const headers = obterHeaderAutenticado();
+      
+      // Busca as categorias usando a rota singular protegida pelo JWT
+      await buscar('/categoria', setCategorias, headers);
       
       if (id !== undefined) {
+        // Busca o lead específico usando a rota singular (/produto/:id)
         await buscar(`/produto/${id}`, (data: Produto) => {
           const match = data.descricao.match(/\[(.*?)\]/);
           if (match) setColunaSel(match[1].toUpperCase());
@@ -48,7 +61,7 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
           const textoSemTag = obterDescricaoLimpa(data.descricao);
           setDescricaoLocal(textoSemTag);
           setProduto(data);
-        }, { headers: { Authorization: token } });
+        }, headers);
       }
     } catch (error) {
       console.error("Erro ao carregar dados do formulário");
@@ -80,13 +93,13 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
 
   async function salvarProduto(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     
-    if (!token || !usuario.id) {
+    if (!usuario.id) {
       ToastAlerta('Sessão expirada. Por favor, faça login novamente.', 'info');
       return;
     }
 
+    const headers = obterHeaderAutenticado();
     const descricaoFinal = `[${colunaSel.toUpperCase()}] ${descricaoLocal.trim()}`;
 
     const produtoParaEnviar = {
@@ -99,10 +112,12 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
 
     try {
       if (id !== undefined) {
-        await atualizar(`/produto`, produtoParaEnviar, setProduto, { headers: { Authorization: token } });
+        // Atualiza o lead na rota singular (/produto)
+        await atualizar(`/produto`, produtoParaEnviar, setProduto, headers);
       } else {
         const { id: _, ...novoProduto } = produtoParaEnviar;
-        await cadastrar(`/produto`, novoProduto, setProduto, { headers: { Authorization: token } });
+        // Cadastra o lead na rota singular (/produto)
+        await cadastrar(`/produto`, novoProduto, setProduto, headers);
       }
       setOpen(false);
       setTimeout(() => { window.location.reload(); }, 800);

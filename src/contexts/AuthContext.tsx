@@ -37,19 +37,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function handleLogin(userLogin: UsuarioLogin) {
         setIsLoading(true)
         try {
-            // AJUSTE DE ROTA: Alterado de '/usuarios/logar' para '/auth/logar' para alinhar com o NestJS
+            // Rota singular alinhada com o NestJS
             await login(`/usuario/logar`, userLogin, (resposta: UsuarioLogin) => {
                 
-                // Remove o prefixo "Bearer " se ele vier da API, deixando apenas a string do Hash
-                const tokenLimpo = resposta.token.replace("Bearer ", "");
+                // 1. Garantimos que o token possua o prefixo correto exigido pelo Passport JWT
+                const tokenFormatado = resposta.token.startsWith("Bearer ") 
+                    ? resposta.token 
+                    : `Bearer ${resposta.token}`;
 
-                const dadosUsuarioAutenticado = { ...resposta, token: tokenLimpo };
+                // 2. Montamos o objeto do usuário com o token pronto para uso em requisições
+                const dadosUsuarioAutenticado = { ...resposta, token: tokenFormatado };
 
                 setUsuario(dadosUsuarioAutenticado);
                 
-                // Persiste o token puro e o objeto limpo para evitar duplicações no recarregamento (useEffect)
-                localStorage.setItem("token", tokenLimpo)
-                localStorage.setItem("usuarioDados", JSON.stringify(dadosUsuarioAutenticado)) 
+                // 3. Persistimos o token completo para que os outros forms usem diretamente
+                localStorage.setItem("token", tokenFormatado);
+                localStorage.setItem("usuarioDados", JSON.stringify(dadosUsuarioAutenticado));
             })
             ToastAlerta('Login realizado com sucesso!', 'sucesso');
             

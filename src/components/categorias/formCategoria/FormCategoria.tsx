@@ -19,12 +19,20 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
     produto: null,
   });
 
+  // Função auxiliar para garantir o cabeçalho no padrão exigido pelo Passport JWT
+  const obterHeaderAutenticado = () => {
+    const token = localStorage.getItem("token");
+    return {
+      headers: {
+        Authorization: token?.startsWith('Bearer ') ? token : `Bearer ${token}`
+      }
+    };
+  };
+
   async function buscarPorId(id: string) {
     try {
-      const token = localStorage.getItem("token");
-      await buscar(`/categoria/${id}`, setCategoria, {
-        headers: { Authorization: token }
-      });
+      // CORREÇÃO: Injetando o cabeçalho formatado com "Bearer " de forma dinâmica
+      await buscar(`/categoria/${id}`, setCategoria, obterHeaderAutenticado());
     } catch (error) {
       ToastAlerta('Erro ao buscar categoria!.', 'erro');
     }
@@ -47,8 +55,9 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
 
   async function gerarNovaCategoria(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const headers = { headers: { Authorization: token } };
+    
+    // CORREÇÃO: Gerando o objeto de cabeçalho higienizado
+    const headers = obterHeaderAutenticado();
 
     const categoriaParaEnviar = id !== undefined
       ? { id: categoria.id, nome: categoria.nome, descricao: categoria.descricao }
@@ -71,11 +80,6 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      
-      {/* Ajustes solicitados:
-          - w-[70%]: Ocupa 70% da largura da tela
-          - overflow-hidden: Remove barras de rolagem indesejadas
-      */}
       <div className="w-[70%] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in duration-300">
         
         {/* Cabeçalho */}
@@ -97,7 +101,6 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
         </div>
 
         <form className="p-8 flex flex-col gap-6" onSubmit={gerarNovaCategoria}>
-          
           <div className="flex flex-col gap-6">
             {/* Campo Nome */}
             <div className="flex flex-col gap-2">
@@ -115,7 +118,7 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
               />
             </div>
 
-            {/* Campo Descrição com limite de 255 caracteres */}
+            {/* Campo Descrição */}
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
                 <label htmlFor="descricao" className="text-xs font-black text-slate-500 uppercase tracking-widest">
@@ -131,7 +134,7 @@ function FormCategoria({ open, setOpen, id }: FormCategoriaProps) {
                 className="text-base border-2 border-slate-200 rounded-xl p-3 focus:border-[#1675F2] focus:ring-4 focus:ring-blue-50 outline-none transition-all h-32 resize-none"
                 value={categoria.descricao || ''}
                 onChange={atualizarEstado}
-                maxLength={255} // Trava do HTML
+                maxLength={255}
                 required
               />
             </div>
