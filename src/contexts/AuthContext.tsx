@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsLoading(true)
         try {
             // AJUSTE DE ROTA: Alterado de '/usuarios/logar' para '/auth/logar' para alinhar com o NestJS
-            await login(`/auth/logar`, userLogin, (resposta: UsuarioLogin) => {
+            await login(`/usuario/logar`, userLogin, (resposta: UsuarioLogin) => {
                 
                 // Remove o prefixo "Bearer " se ele vier da API, deixando apenas a string do Hash
                 const tokenLimpo = resposta.token.replace("Bearer ", "");
