@@ -117,7 +117,7 @@ function FormProduto({ open, setOpen, id }: FormProdutoProps) {
       } else {
         const { id: _, ...novoProduto } = produtoParaEnviar;
         // Cadastra o lead na rota singular (/produto)
-        await cadastrar(`/produto`, novoProduto, setProduto, headers);
+        await cadastrar(`/produtos`, novoProduto, setProduto, headers);
       }
       setOpen(false);
       setTimeout(() => { window.location.reload(); }, 800);
